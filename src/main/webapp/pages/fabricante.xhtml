@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Fabricante</title>
+</h:head>
+<h:body>
+	<p:growl id="Mensagem" />
+
+	<h:form id="formLista">
+		<p:panel header="Fabricante - Listagem">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado"
+				paginator="true" value="#{fabricanteBean.fabricantes}"
+				var="CursorFabricante" rows="4">
+
+				<f:facet name="header">
+					<p:commandButton value="Novo"
+						oncomplete="PF('dlgFabricante').show();"
+						actionListener="#{fabricanteBean.novo}"
+						update=":formCadastro:painelCadastro" />
+				</f:facet>
+
+				<p:column headerText="Nome" sortBy="#{CursorFabricante.descricao}"
+					filterBy="#{CursorFabricante.descricao}">
+					<h:outputText value="#{CursorFabricante.descricao}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{fabricanteBean.excluir}"
+						update=":Mensagem :formLista:tabela">
+
+						<p:confirm header="Confirmação"
+							message="Deseja excluir este Fabricante ?" icon="ui-icon-alert" />
+
+						<f:attribute name="estadoSelecionadoExcluir"
+							value="#{CursorFabricante}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{fabricanteBean.editar}"
+						update=":formCadastro:painelCadastro"
+						oncomplete="PF('dlgFabricante').show();">
+
+						<f:attribute name="estadoSelecionadoEditar"
+							value="#{CursorFabricante}"/>
+
+					</p:commandButton>
+
+				</p:column>
+			</p:dataTable>
+
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+
+		</p:panel>
+	</h:form>
+
+
+	<p:dialog header="Fabricante - Cadastro" widgetVar="dlgFabricante"
+		draggable="false" resizable="false" modal="true">
+		<h:form id="formCadastro">
+
+			<p:panelGrid id="painelCadastro" columns="2">
+
+				<p:outputLabel value="Fabricante" />
+				<p:inputText maxlength="50" size="30"
+					value="#{fabricanteBean.fabricante.descricao}" />
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="2">
+				<p:commandButton value="Salvar"
+					actionListener="#{fabricanteBean.salvar}"
+					update=":Mensagem :formCadastro:painelCadastro :formLista:tabela" />
+				<p:commandButton value="Fechar"
+					oncomplete="PF('dlgFabricante').hide();" />
+			</p:panelGrid>
+
+		</h:form>
+	</p:dialog>
+
+</h:body>
+</html>

@@ -13,9 +13,9 @@ public class ClienteDAOtest {
 	public void salvar() {
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		Pessoa pessoa = pessoaDAO.buscar(1L);
+		Pessoa pessoa = pessoaDAO.buscar(3L);
 		
-		Cliente cliente = new Cliente(new Date(), true, pessoa);
+		Cliente cliente = new Cliente(new Date(), false, pessoa);
 		ClienteDAO dao = new ClienteDAO();
 		dao.salvar(cliente);
 		System.out.println("Cadastrado com sucesso");

@@ -21,6 +21,7 @@ import br.com.deyvisson.domain.Produto;
 public class ProdutoBean implements Serializable {
 
 	private Produto produto;
+	
 	private List<Produto> produtos;
 	private List<Fabricante> fabricantes;
 

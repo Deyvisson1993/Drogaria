@@ -28,7 +28,7 @@
 		<!-- Mostra as SQLs Geradas -->
 		<property name="show_sql">true</property>
 
-		<!-- Cria as tabelas do banco de dados -->
+		<!-- Cria as tabelas do banco de dados CREATE/UPDATE/VALIDATE-->
 		<property name="hbm2ddl.auto">validate</property>
 		
 		<!-- Mapeamaneto das Entidades -->

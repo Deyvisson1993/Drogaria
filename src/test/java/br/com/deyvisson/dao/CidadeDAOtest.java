@@ -10,7 +10,7 @@ import br.com.deyvisson.domain.Estado;
 
 public class CidadeDAOtest {
 	
-	@Test
+	//@Test
 	@Ignore
 	public void salvar() {
 		
@@ -24,7 +24,7 @@ public class CidadeDAOtest {
 		System.out.println("Cadastrado com sucesso");
 	}
 	
-	@Test
+	//@Test
 	@Ignore
 	public void listar() {
 		
@@ -39,7 +39,7 @@ public class CidadeDAOtest {
 			System.out.println("Nome do estado - "+ cidade.getEstado().getNome());
 		}
 	}
-	@Test
+	//@Test
 	@Ignore
 	public void buscar() {
 		
@@ -55,7 +55,7 @@ public class CidadeDAOtest {
 			System.out.println("Nome do estado - "+ cidade.getEstado().getNome());
 		
 	}
-	@Test
+	//@Test
 	@Ignore
 	public void excluir() {
 		
@@ -69,7 +69,7 @@ public class CidadeDAOtest {
 		
 	}
 	
-	@Test
+	//@Test
 	@Ignore
 	public void atualizar() {
 		
@@ -83,5 +83,23 @@ public class CidadeDAOtest {
 		
 		System.out.println("Atualizado = " + cidade.getNome());
 		
+	}
+	
+	@Test
+	public void bucarPorEstado() {
+		
+		Long estadoCodigo = 5L;
+		
+		CidadeDAO dao = new CidadeDAO();
+		List<Cidade> lista = dao.buscarPorEstado(estadoCodigo);
+		
+		for (Cidade cidade : lista) {
+			System.out.println("Codigo - " + cidade.getCodigo());
+			System.out.println("Nome da cidade - "+ cidade.getNome());
+			System.out.println("Codigo Estado - "+ cidade.getEstado().getCodigo());
+			System.out.println("Sigla do Estado - "+ cidade.getEstado().getSigla());
+			System.out.println("Nome do estado - "+ cidade.getEstado().getNome());
+			System.out.println("");
+		}
 	}
 }

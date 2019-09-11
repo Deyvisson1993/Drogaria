@@ -28,54 +28,14 @@
 
 				</p:column>
 
-				<p:column headerText="CPF" sortBy="#{CursorPesso.cpf}"
-					filterBy="#{CursorPesso.cpf}">
+				<p:column headerText="CPF">
 					<h:outputText value="#{CursorPesso.cpf}" />
 
 				</p:column>
 
-				<p:column headerText="Rg">
+				<p:column headerText="RG">
 					<h:outputText value="#{CursorPesso.rg}" />
 
-				</p:column>
-
-				<p:column headerText="Rua">
-					<h:outputText value="#{CursorPesso.rua}" />
-
-				</p:column>
-
-				<p:column headerText="Numero">
-					<h:outputText value="#{CursorPesso.numero}" />
-
-				</p:column>
-
-				<p:column headerText="Bairro">
-					<h:outputText value="#{CursorPesso.bairro}" />
-
-				</p:column>
-
-				<p:column headerText="Cep">
-					<h:outputText value="#{CursorPesso.cep}" />
-
-				</p:column>
-
-				<p:column headerText="Complemento">
-					<h:outputText value="#{CursorPesso.complemento}" />
-
-				</p:column>
-
-
-				<p:column headerText="Telefone">
-					<h:outputText value="#{CursorPesso.telefone}" />
-
-				</p:column>
-
-				<p:column headerText="Celular">
-					<h:outputText value="#{CursorPesso.celular}" />
-				</p:column>
-
-				<p:column headerText="Email">
-					<h:outputText value="#{CursorPesso.email}" />
 				</p:column>
 
 				<p:column headerText="Cidade" sortable="#{CursorPesso.cidade.nome}">
@@ -132,9 +92,8 @@
 					requiredMessage="Este Campo é OBRIGATORIO" />
 
 				<p:outputLabel value="CPF:" />
-				<p:inputText maxlength="14" size="30"
-					value="#{pessoaBean.pessoa.cpf}" required="true"
-					requiredMessage="Este Campo é OBRIGATORIO" />
+				<p:inputMask value="#{pessoaBean.pessoa.cpf}" mask="999.999.999-99"
+					size="14" required="true" requiredMessage="O Campo é obrigatorio" />
 
 				<p:outputLabel value="Rg:" />
 				<p:inputText maxlength="50" size="30"
@@ -167,27 +126,42 @@
 					requiredMessage="Este Campo é OBRIGATORIO" />
 
 				<p:outputLabel value="Telefone:" />
-				<p:inputText maxlength="50" size="30"
+				<p:inputMask mask="(99) 99999-9999" size="12"
 					value="#{pessoaBean.pessoa.telefone}" required="true"
-					requiredMessage="Este Campo é OBRIGATORIO" />
+					requiredMessage="O Campo é obrigatorio" />
 
 				<p:outputLabel value="Celular:" />
-				<p:inputText maxlength="50" size="30"
+				<p:inputMask mask="(99) 99999-9999" size="12"
 					value="#{pessoaBean.pessoa.celular}" required="true"
-					requiredMessage="Este Campo é OBRIGATORIO" />
+					requiredMessage="O Campo é obrigatorio" />
 
 				<p:outputLabel value="Email" />
 				<p:inputText maxlength="50" size="30"
 					value="#{pessoaBean.pessoa.email}" required="true"
 					requiredMessage="Este Campo é OBRIGATORIO" />
 
+				<p:outputLabel value="Estados" />
+
+				<p:selectOneMenu filter="true"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					value="#{pessoaBean.estado}">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma Estado" />
+					<f:selectItems value="#{pessoaBean.estados}" var="estados"
+						itemValue="#{estados}" itemLabel="#{estados.nome}" />
+					<p:ajax listener="#{pessoaBean.popular}"
+						update=":formCadastro:cidade" />
+
+				</p:selectOneMenu>
+
 				<p:outputLabel value="Cidade" />
 
-				<p:selectOneMenu filter="true" value="#{pessoaBean.pessoa.cidade}"
+				<p:selectOneMenu id="cidade" filter="true"
+					value="#{pessoaBean.pessoa.cidade}"
 					converter="omnifaces.SelectItemsConverter" required="true"
 					requiredMessage="O 'Campo' Cidade é OBRIGATORIO">
 					<f:selectItem noSelectionOption="true"
-						itemLabel="Selecione uma Ciade" />
+						itemLabel="Selecione uma Cidade" />
 					<f:selectItems value="#{pessoaBean.cidades}" var="cidades"
 						itemValue="#{cidades}" itemLabel="#{cidades.nome}" />
 
@@ -199,7 +173,7 @@
 				<p:commandButton value="Salvar"
 					actionListener="#{pessoaBean.salvar}"
 					update=":Mensagem :formCadastro:painel :formListagem:tabela" />
-				<p:commandButton value="Fechar" oncomplete="PF('dlgPessoa').hide();" />
+				<p:commandButton value="Fechar" oncomplete="PF('dlgPessoa').hide();"/>
 			</p:panelGrid>
 		</h:form>
 

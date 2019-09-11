@@ -1,6 +1,7 @@
 package br.com.deyvisson.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +12,10 @@ import javax.faces.event.ActionEvent;
 import org.omnifaces.util.Messages;
 
 import br.com.deyvisson.dao.CidadeDAO;
+import br.com.deyvisson.dao.EstadoDAO;
 import br.com.deyvisson.dao.PessoaDAO;
 import br.com.deyvisson.domain.Cidade;
+import br.com.deyvisson.domain.Estado;
 import br.com.deyvisson.domain.Pessoa;
 
 @SuppressWarnings("serial")
@@ -21,7 +24,9 @@ import br.com.deyvisson.domain.Pessoa;
 public class PessoaBean implements Serializable {
 
 	private Pessoa pessoa;
+	private Estado estado;
 	private List<Cidade> cidades;
+	private List<Estado> estados;
 	private List<Pessoa> pessoas;
 
 	public Pessoa getPessoa() {
@@ -30,6 +35,14 @@ public class PessoaBean implements Serializable {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	public List<Cidade> getCidades() {
@@ -48,13 +61,25 @@ public class PessoaBean implements Serializable {
 		this.pessoas = pessoas;
 	}
 
+	public List<Estado> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(List<Estado> estados) {
+		this.estados = estados;
+	}
+
 	public void novo() {
 
 		try {
 
 			pessoa = new Pessoa();
-			CidadeDAO dao = new CidadeDAO();
-			cidades = dao.listar();
+			estado = new Estado();
+
+			EstadoDAO dao = new EstadoDAO();
+			estados = dao.listar();
+
+			cidades = new ArrayList<Cidade>();
 		} catch (RuntimeException erro) {
 
 			Messages.addGlobalError("Nao foi Possivel Listar as Cidades");
@@ -62,6 +87,7 @@ public class PessoaBean implements Serializable {
 		}
 
 	}
+
 	@PostConstruct
 	public void listar() {
 		try {
@@ -115,7 +141,7 @@ public class PessoaBean implements Serializable {
 	public void editar(ActionEvent evento) {
 
 		try {
-			
+
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionadaEditar");
 			CidadeDAO dao = new CidadeDAO();
 			cidades = dao.listar();
@@ -125,6 +151,24 @@ public class PessoaBean implements Serializable {
 			erro.printStackTrace();
 		}
 
+	}
+
+	public void popular() {
+		try {
+
+			if (estado != null) {
+
+				CidadeDAO dao = new CidadeDAO();
+				cidades = dao.buscarPorEstado(estado.getCodigo());
+			} else {
+				cidades = new ArrayList<>();
+
+			}
+
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro Ao tentar editar filtrar as Cidades");
+			erro.printStackTrace();
+		}
 	}
 
 }

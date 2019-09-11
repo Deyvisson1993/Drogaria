@@ -90,13 +90,21 @@
 				<p:inputText maxlength="5" size="10"
 					value="#{produtoBean.produto.quantidade}" required="true"
 					requiredMessage="O Campo 'Quantidade' é OBRIGATORIO"
-					converterMessage="O valor informado no Campo 'Quantidade' é invalido" />
+					converterMessage="O valor informado no Campo 'Quantidade' é invalido"
+					validatorMessage="Este campo não aceita valores negativos">
+
+					<f:validateLongRange minimum="0" maximum="1000" />
+				</p:inputText>
 
 				<p:outputLabel value="Preço" />
 				<p:inputText maxlength="7" size="10"
 					value="#{produtoBean.produto.preco}" required="true"
 					requiredMessage="O Campo 'Preço' é OBRIGATORIO"
-					converterMessage="O valor informado no Campo 'Preço' é invalido" />
+					converterMessage="O valor informado no Campo 'Preço' é invalido"
+					validatorMessage="Este campo nao aceita valores negativos">
+					<f:validateDoubleRange minimum="0.01" maximum="9999.99" />
+
+				</p:inputText>
 
 				<p:outputLabel value="Fabricante" />
 				<p:selectOneMenu filter="true"
@@ -122,6 +130,5 @@
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
-
 </h:body>
 </html>

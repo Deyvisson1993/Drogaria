@@ -9,6 +9,7 @@
 	<title>Usuario</title>
 </h:head>
 <h:body>
+	<p:growl id="Mensagem" />
 	<h:form id="formListagem">
 		<p:panel header="Usuario - listagem">
 			<p:dataTable id="tabela" emptyMessage="Nenhum Registro Encontrado"
@@ -16,7 +17,9 @@
 				var="usuario">
 
 				<f:facet name="header">
-					<p:commandButton value="Novo" oncomplete="PF('dlgUsuario').show();" />
+					<p:commandButton value="Novo" oncomplete="PF('dlgUsuario').show();"
+						actionListener="#{usuarioBean.novo}"
+						update=":Mensagem :formCadastro:painel" />
 				</f:facet>
 
 				<p:column headerText="Nome" filterBy="#{usuario.pessoa.nome}"
@@ -42,44 +45,81 @@
 				</p:column>
 
 				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{usuarioBean.excluir}"
+						update=":Mensagem :formListagem:tabela">
 
+						<p:confirm header="Confirmacao"
+							message="Deseja excluir o Cliente ?" icon="ui-icon-alert" />
+						<f:attribute name="usuarioSelecionadoExcluir" value="#{usuario}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{usuarioBean.editar}"
+						update=":Mensagem :formCadastro:painel"
+						oncomplete="PF('dlgUsuario').show();">
+
+						<f:attribute name="usuarioSelecionadoEditar" value="#{usuario}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			
 		</p:panel>
 	</h:form>
 
-	<h:form>
-		<p:dialog header="Clientes - Cadastro" widgetVar="dlgUsuario"
-			draggable="fasle" resizable="false" modal="true" closable="false">
+	<p:dialog header="Clientes - Cadastro" widgetVar="dlgUsuario"
+		draggable="fasle" resizable="false" modal="true" closable="false">
+		<h:form id="formCadastro">
+			<p:panelGrid id="painel" columns="2">
 
-			<p:panelGrid columns="2">
+				<p:outputLabel value="Pessoa *" />
+				<p:selectOneMenu filter="true" value="#{usuarioBean.usuario.pessoa}"
+					required="true" converter="omnifaces.SelectItemsConverter"
+					requiredMessage="Este campo 'Pessoa' é obrigatorio">
 
-				<p:outputLabel value="Pessoa" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione uma pessoa" />
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma pessoa" />
+					<f:selectItems value="#{usuarioBean.pessoas}" var="pessoa"
+						itemValue="#{pessoa}" itemLabel="#{pessoa.nome}" />
 				</p:selectOneMenu>
 
-				<p:outputLabel value="Senha:" />
-				<p:password maxlength="15" size="20" />
+				<p:outputLabel value="Senha *:" />
+				<p:password maxlength="15" size="20"
+					value="#{usuarioBean.usuario.senha}" required="true"
+					requiredMessage="O campo 'Senha' é obrigatorio"
+					validatorMessage="Informe uma senha de 6 a 10 caracteres">
+					<f:validateLength minimum="4" maximum="32" />
+				</p:password>
+
 
 				<p:outputLabel value="Tipo:" />
-				<p:selectOneRadio>
+				<p:selectOneRadio value="#{usuarioBean.usuario.tipo}"
+					required="true" requiredMessage="O campo 'Tipo' é Obrigatorio">
 					<f:selectItem itemValue="A" itemLabel="Admistrador" />
 					<f:selectItem itemValue="G" itemLabel="Gerente" />
 					<f:selectItem itemValue="B" itemLabel="Balconista" />
 				</p:selectOneRadio>
 
 				<p:outputLabel value="Ativo" />
-				<p:selectBooleanCheckbox />
+				<p:selectBooleanCheckbox value="#{usuarioBean.usuario.estado}"
+					required="true" requiredMessage="O campo 'Ativo' é obrigatorio" />
 
 			</p:panelGrid>
-
 			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
+				<p:commandButton value="Salvar"
+					actionListener="#{usuarioBean.salvar}"
+					update=":Mensagem :formCadastro:painel :formListagem:tabela" />
 				<p:commandButton value="Fechar"
 					oncomplete="PF('dlgUsuario').hide();" />
 			</p:panelGrid>
-		</p:dialog>
-	</h:form>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>

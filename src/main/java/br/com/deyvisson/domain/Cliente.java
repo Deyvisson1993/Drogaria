@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -53,6 +54,21 @@ public class Cliente extends GenericDomain{
 	public void setLiberado(Boolean liberado) {
 		this.liberado = liberado;
 	}
+	
+	@Transient
+	public String getFormatadoLiberado() {
+		String formatadoLiberado = null;
+		
+		if(liberado) {
+			
+			formatadoLiberado = "Sim";
+		}else {
+			formatadoLiberado = "Não";
+		}
+		
+		return formatadoLiberado;
+		
+	}
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -60,8 +76,5 @@ public class Cliente extends GenericDomain{
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
-	}
-	
-	
-	
+	}	
 }

@@ -8,11 +8,11 @@ import br.com.deyvisson.domain.Usuario;
 
 public class UsuarioDAOtest {
 	@Test
-	@Ignore
+	//@Ignore
 	public void salvar() {
 		
 		PessoaDAO pessoaDAO = new PessoaDAO();
-		Pessoa pessoa = pessoaDAO.buscar(2L);
+		Pessoa pessoa = pessoaDAO.buscar(1L);
 		
 		Usuario usuario = new Usuario("8896",'A', true, pessoa);
 		UsuarioDAO dao = new UsuarioDAO();

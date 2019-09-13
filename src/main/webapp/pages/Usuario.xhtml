@@ -9,29 +9,36 @@
 	<title>Usuario</title>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form id="formListagem">
 		<p:panel header="Usuario - listagem">
-			<p:dataTable emptyMessage="Nenhum Registro Encontrado"
-				paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum Registro Encontrado"
+				paginator="true" value="#{usuarioBean.usuarios}" rows="5"
+				var="usuario">
 
 				<f:facet name="header">
 					<p:commandButton value="Novo" oncomplete="PF('dlgUsuario').show();" />
 				</f:facet>
 
-				<p:column headerText="Nome">
+				<p:column headerText="Nome" filterBy="#{usuario.pessoa.nome}"
+					sortBy="{usuario.pessoa.nome}">
+
+					<h:outputText value="#{usuario.pessoa.nome}" />
 
 				</p:column>
 
 				<p:column headerText="CPF">
 
+					<h:outputText value="#{usuario.pessoa.cpf}" />
 				</p:column>
 
 				<p:column headerText="Tipo">
 
+					<h:outputText value="#{usuario.tipoFormatado}" />
 				</p:column>
 
 				<p:column headerText="Ativo">
 
+					<h:outputText value="#{usuario.estadoFormatado}" />
 				</p:column>
 
 				<p:column headerText="Opções">
@@ -63,7 +70,7 @@
 				</p:selectOneRadio>
 
 				<p:outputLabel value="Ativo" />
-				<p:selectBooleanCheckbox/>
+				<p:selectBooleanCheckbox />
 
 			</p:panelGrid>
 

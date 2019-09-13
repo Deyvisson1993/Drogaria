@@ -7,17 +7,20 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Clientes</title>
+	<h:outputScript library="js" name="scripts.js" />
 </h:head>
 <h:body>
-	<h:form>
+	<p:growl id="Mensagem" />
+	<h:form id="formListagem">
 		<p:panel header="Clientes - listagem">
-			<p:dataTable emptyMessage="Nenhum Registro Encontrado"
+			<p:dataTable id="tabela" emptyMessage="Nenhum Registro Encontrado"
 				paginator="true" value="#{clienteBean.clientes}" var="cliente"
 				rows="5">
 
 				<f:facet name="header">
-					<p:commandButton value="Novo"
-						oncomplete="PF('dlgClientes').show();" />
+					<p:commandButton value="Novo" actionListener="#{clienteBean.novo}"
+						oncomplete="PF('dlgClientes').show();"
+						update=":Mensagem :formCadastro:painel" />
 				</f:facet>
 
 				<p:column headerText="Nome" sortBy="#{cliente.pessoa.nome}"
@@ -40,42 +43,80 @@
 				</p:column>
 
 				<p:column headerText="Liberado">
-					<p:selectBooleanCheckbox value="#{cliente.liberado}" disabled="true"/>
+					<p:selectBooleanCheckbox value="#{cliente.liberado}"
+						disabled="true" />
 
 				</p:column>
 
 				<p:column headerText="Opções">
 
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{clienteBean.excluir}"
+						update=":Mensagem :formListagem:tabela">
+
+						<p:confirm header="Confirmacao"
+							message="Deseja excluir o Cliente ?" icon="ui-icon-alert" />
+						<f:attribute name="clienteSelecionadoExcluir" value="#{cliente}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{clienteBean.editar}"
+						update=":Mensagem :formCadastro:painel"
+						oncomplete="PF('dlgClientes').show();">
+
+						<f:attribute name="clienteSelecionadoEditar" value="#{cliente}" />
+					</p:commandButton>
+
 				</p:column>
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			
 		</p:panel>
 	</h:form>
 
-	<h:form>
-		<p:dialog header="Clientes - Cadastro" widgetVar="dlgClientes"
-			draggable="fasle" resizable="false" modal="true" closable="false">
+	<p:dialog header="Clientes - Cadastro" widgetVar="dlgClientes"
+		draggable="fasle" resizable="false" modal="true" closable="false">
+		<h:form id="formCadastro">
+			<p:panelGrid id="painel" columns="2">
 
-			<p:panelGrid columns="2">
 				<p:outputLabel value="Pessoa" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione uma pessoa" />
+				<p:selectOneMenu filter="true" value="#{clienteBean.cliente.pessoa}"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="o Campo 'Pessoa' é OBRIGATORIO">
+
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma Pessoa" />
+					<f:selectItems value="#{clienteBean.pessoas}" var="pessoa"
+						itemValue="#{pessoa}" itemLabel="#{pessoa.nome}" />
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Data de Cadastro" />
-				<p:calendar />
+				<p:calendar value="#{clienteBean.cliente.dataCadastro}"
+					required="true" requiredMessage="O campo 'Data' é Obrigatorio"
+					locale="pt_BR" size="8" />
 
 				<p:outputLabel value="Ativo" />
-				<p:selectBooleanCheckbox />
+				<p:selectBooleanCheckbox value="#{clienteBean.cliente.liberado}"
+					required="true" requiredMessage="O campo é Obrigatorio" />
 
 
 			</p:panelGrid>
 
 			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
+				<p:commandButton value="Salvar"
+					actionListener="#{clienteBean.salvar}"
+					update=":Mensagem :formCadastro:painel :formListagem:tabela" />
+
 				<p:commandButton value="Fechar"
 					oncomplete="PF('dlgClientes').hide();" />
 			</p:panelGrid>
-		</p:dialog>
-	</h:form>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>

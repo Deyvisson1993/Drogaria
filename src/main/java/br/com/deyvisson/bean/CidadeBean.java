@@ -118,7 +118,7 @@ public class CidadeBean implements Serializable {
 			EstadoDAO dao = new EstadoDAO();
 			estados = dao.listar();
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Ocorreu um erro ao tentar selecionar uma Cidade");
+			Messages.addGlobalError("Ocorreu um erro ao tentar Editar uma Cidade");
 			erro.printStackTrace();
 		}
 	}

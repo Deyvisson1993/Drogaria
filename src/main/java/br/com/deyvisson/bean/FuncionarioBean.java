@@ -101,7 +101,7 @@ public class FuncionarioBean implements Serializable {
 
 	}
 
-	public void Editar(ActionEvent evento) {
+	public void editar(ActionEvent evento) {
 
 		try {
 
@@ -117,7 +117,7 @@ public class FuncionarioBean implements Serializable {
 		}
 	}
 
-	public void Excluir(ActionEvent evento) {
+	public void excluir(ActionEvent evento) {
 
 		try {
 

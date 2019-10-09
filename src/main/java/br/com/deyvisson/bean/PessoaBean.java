@@ -143,8 +143,13 @@ public class PessoaBean implements Serializable {
 		try {
 
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionadaEditar");
-			CidadeDAO dao = new CidadeDAO();
-			cidades = dao.listar();
+			
+			estado = pessoa.getCidade().getEstado();
+			
+			EstadoDAO dao = new EstadoDAO();
+			estados = dao.listar();
+			
+			popular();
 
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Erro Ao tentar editar os dados de Pessoa");

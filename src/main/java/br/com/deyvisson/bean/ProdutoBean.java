@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
+import org.primefaces.event.FileUploadEvent;
 
 import br.com.deyvisson.dao.FabricanteDAO;
 import br.com.deyvisson.dao.ProdutoDAO;
@@ -122,5 +123,10 @@ public class ProdutoBean implements Serializable {
 			Messages.addGlobalError("Não foi possivel Editar/Selecionar o Produto");
 			erro.printStackTrace();
 		}
+	}
+	
+	public void fotoUpload(FileUploadEvent evento) {
+		
+		
 	}
 }

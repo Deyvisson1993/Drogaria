@@ -18,6 +18,12 @@
 		<param-name>primefaces.THEME</param-name>
 		<param-value>home</param-value>
 	</context-param>
+	
+		<!-- Definição do Mecanismo de Uploud -->
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>native</param-value>
+	</context-param>
 
 	<!-- Configuração do JSF -->
 	<servlet>
